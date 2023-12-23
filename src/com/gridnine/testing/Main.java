@@ -12,10 +12,10 @@ public class Main {
         List<Flight> conditionOneList = conditionOne(testList);
         System.out.println(conditionOneList);
 
-        List<Flight> conditionTwoList = conditionTwo(testList);
+        List<Flight> conditionTwoList = conditionTwo(conditionOneList);
         System.out.println(conditionTwoList);
 
-        List<Flight> conditionThreeList = conditionThree(testList);
+        List<Flight> conditionThreeList = conditionThree(conditionTwoList);
         System.out.println(conditionThreeList);
 
     }
@@ -36,7 +36,7 @@ public class Main {
 
     private static List<Flight> conditionThree(List<Flight> testList) {
         return testList.stream()
-                .filter(flight -> flight.getWaitingTimeForTransfer().toHoursPart() >= 2)
+                .filter(flight -> flight.getWaitingTimeForTransfer().toHoursPart() <= 2)
                 .collect(Collectors.toList());
     }
 

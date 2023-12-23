@@ -72,16 +72,15 @@ class Flight {
 
     Duration getWaitingTimeForTransfer(){
         if(segments.size() > 1){
-            Duration waitingTimeForTransfer = getTravelTime();
+            Duration waitingTimeForTransfer = this.getTravelTime();
             for (int i = 0; i < segments.size(); i++) {
-                waitingTimeForTransfer.minus(segments.get(i).getTravelTime());
+                waitingTimeForTransfer = waitingTimeForTransfer.minus(segments.get(i).getTravelTime());
             }
             return waitingTimeForTransfer;
         }else {
             return Duration.ZERO;
         }
     }
-
 
     @Override
     public String toString() {
@@ -122,8 +121,8 @@ class Segment {
     @Override
     public String toString() {
         DateTimeFormatter fmt =
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        return '[' + departureDate.format(fmt) + '|' + arrivalDate.format(fmt)
+                DateTimeFormatter.ofPattern("yyyy-MM-dd 'T' HH:mm");
+        return '[' + departureDate.format(fmt) + " | " + arrivalDate.format(fmt)
                 + ']';
     }
 }
