@@ -1,6 +1,8 @@
 package com.gridnine.testing;
 
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -61,6 +63,39 @@ class Flight {
         return segments;
     }
 
+    LocalDate getDeparture(){
+        return segments.get(0).getDepartureDate().toLocalDate();
+    }
+
+    LocalDate getArrival(){
+        int size = segments.size();
+        return segments.get(size - 1).getArrivalDate().toLocalDate();
+    }
+
+    Duration getTravelTime(){
+        if(!segments.isEmpty()){
+            return Duration.between(segments.get(0).getDepartureDate(), segments.get(segments.size()-1).getArrivalDate());
+        }else {
+            return Duration.ZERO;
+        }
+    }
+
+    int getCountOfTransfer(){
+        return segments.size() - 1;
+    }
+
+    Duration getWaitingTimeForTransfer(){
+        if(segments.size() > 1){
+            Duration waitingTimeForTransfer = this.getTravelTime();
+            for (int i = 0; i < segments.size(); i++) {
+                waitingTimeForTransfer = waitingTimeForTransfer.minus(segments.get(i).getTravelTime());
+            }
+            return waitingTimeForTransfer;
+        }else {
+            return Duration.ZERO;
+        }
+    }
+
     @Override
     public String toString() {
         return segments.stream().map(Object::toString)
@@ -89,11 +124,19 @@ class Segment {
         return arrivalDate;
     }
 
+    Duration getTravelTime(){
+        if(arrivalDate.isAfter(departureDate)){
+            return Duration.between(departureDate, arrivalDate);
+        }else {
+            return Duration.ZERO;
+        }
+    }
+
     @Override
     public String toString() {
         DateTimeFormatter fmt =
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        return '[' + departureDate.format(fmt) + '|' + arrivalDate.format(fmt)
+                DateTimeFormatter.ofPattern("yyyy-MM-dd 'T' HH:mm");
+        return '[' + departureDate.format(fmt) + " | " + arrivalDate.format(fmt)
                 + ']';
     }
 }
