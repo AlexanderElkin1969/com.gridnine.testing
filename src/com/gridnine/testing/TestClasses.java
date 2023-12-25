@@ -2,6 +2,7 @@ package com.gridnine.testing;
 
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -62,12 +63,25 @@ class Flight {
         return segments;
     }
 
+    LocalDate getDeparture(){
+        return segments.get(0).getDepartureDate().toLocalDate();
+    }
+
+    LocalDate getArrival(){
+        int size = segments.size();
+        return segments.get(size - 1).getArrivalDate().toLocalDate();
+    }
+
     Duration getTravelTime(){
         if(!segments.isEmpty()){
             return Duration.between(segments.get(0).getDepartureDate(), segments.get(segments.size()-1).getArrivalDate());
         }else {
-            return null;
+            return Duration.ZERO;
         }
+    }
+
+    int getCountOfTransfer(){
+        return segments.size() - 1;
     }
 
     Duration getWaitingTimeForTransfer(){
