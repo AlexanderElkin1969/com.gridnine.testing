@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         List<Flight> conditionOneList = conditionOne(FlightBuilder.createFlights());
         System.out.println("Condition 1 :");
         System.out.println(conditionOneList);
@@ -32,8 +32,7 @@ public class Main {
                 "\n COUNT_OF_TRANSFER 1 - вывести перелёты не более чем с 1 пересадкой;" +
                 "\n WAITING_TIME 3 - вывести перелёты с ожиданием пересадки не более 3 часов;" +
                 "\n EXIT VIEW - для выхода из просмотра.");
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        try {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in))) {
             Filter filter = Filter.ALL;
             String condition = " ";
             do {
@@ -44,8 +43,7 @@ public class Main {
                 String filterStr = s.substring(0, index);
                 filter = Filter.valueOf(filterStr.toUpperCase());
                 condition = s.substring(index + 1);
-            }while (filter != Filter.EXIT);
-            bufferedReader.close();
+            } while (filter != Filter.EXIT);
         } catch (IOException | ParseException e) {
             System.out.println(e.getMessage());
         }
